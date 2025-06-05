@@ -81,6 +81,63 @@
                 max-width: 220px;
             }
         }
+         .slider-container {
+            position: relative;
+            max-width: 800px; /* Можно регулировать под нужный размер */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slider img {
+            width: 100%; /* Каждое фото на всю ширину контейнера */
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+        
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+        }
+        
+        .prev {
+            left: 10px;
+        }
+        
+        .next {
+            right: 10px;
+        }
+        
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: #333;
+        }
     </style>
 </head>
 <body>
@@ -94,5 +151,62 @@
     <div>
         <img class="we" src="we^_^.jpg" alt="Evgeny and Vicky together">
     </div>
+    <div class="slider-container">
+        <div class="slider">
+            <img src="photo_2025-06-05_08-52-34 (2).jpg" alt="img 1">
+            <img src="photo_2025-06-05_08-52-34.jpg" alt="img 2">
+            <img src="photo_2025-06-05_08-52-33 (3).jpg" alt="img 3">
+        </div>
+        
+        <button class="slider-btn prev">❮</button>
+        <button class="slider-btn next">❯</button>
+        
+        <div class="slider-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
 </body>
+    <script>
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slider img');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        const dots = document.querySelectorAll('.dot');
+        
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateSlider();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            updateSlider();
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlider();
+            });
+        });
+
+        // Автопрокрутка (раскомментировать, если нужно)
+        // setInterval(() => {
+        //     currentSlide = (currentSlide + 1) % slideCount;
+        //     updateSlider();
+        // }, 3000);
+    </script>
 </html>
